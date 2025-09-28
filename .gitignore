@@ -1,0 +1,31 @@
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+
+# Virtual environment
+venv/
+.env/
+*.env
+
+# Django
+db.sqlite3
+/staticfiles/
+/media/
+
+# Jupyter/ML
+.ipynb_checkpoints
+*.h5
+*.pkl
+*.joblib
+
+# VSCode/PyCharm
+.vscode/
+.idea/
+
+# OS
+.DS_Store
