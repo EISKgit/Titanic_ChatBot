@@ -13,7 +13,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 model_path = os.path.join(BASE_DIR, "ML", "titanic_model.joblib")
 
 # Load environment variables from .env
-load_dotenv()  # make sure this runs first
+load_dotenv()  
 # Load model
 model = load(model_path)
 

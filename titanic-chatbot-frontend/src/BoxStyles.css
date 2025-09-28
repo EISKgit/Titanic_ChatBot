@@ -1,0 +1,28 @@
+.info-box {
+    width: 100%;
+    max-width: 600px;
+    background: rgba(255, 255, 255, 0.023);
+    backdrop-filter: blur(0px);
+    border-radius: 20px;
+    padding: 1.5rem 2rem;
+    margin: 1rem 0;
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0);
+}
+
+.info-box h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0);
+}
+
+.info-box p,
+.info-box ul {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.info-box ul {
+    padding-left: 1.2rem;
+}
