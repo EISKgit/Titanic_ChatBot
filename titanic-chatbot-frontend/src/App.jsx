@@ -132,7 +132,7 @@ function App() {
         break;
       case "parch":
         setUserData({ ...userData, Parch: parseInt(input) });
-        setMessages(prev => [...prev, { sender: "bot", text: "Fare?" }]);
+        setMessages(prev => [...prev, { sender: "bot", text: "Fare? ($0 - $512)" }]);
         nextStep = "fare";
         break;
       case "fare":
