@@ -95,3 +95,39 @@ class TitanicMLAPIView(APIView):
                 "fact": llm_response.fact
             }
         })
+
+
+
+
+# Receptionist LLM
+receptionist_model = ChatGroq(
+    model="llama-3.3-70b-versatile",
+    temperature=0.7,
+)
+
+class TitanicReceptionistAPIView(APIView):
+    def post(self, request):
+        user_question = request.data.get("question", "")
+
+        prompt = f"""
+        You are a Titanic onboarding receptionist assistant.
+        Answer only questions related to:
+        - The Titanic ship
+        - Its voyage, passengers, history, or travel-related info
+
+        If the question is NOT related to Titanic or ship travel, respond with:
+        "Sorry, I can only answer questions related to the Titanic or ship travel."
+
+        After answering, politely guide the user back to filling the form by saying:
+        "Now, let's continue with your details."
+        
+        User question: {user_question}
+        """
+
+        try:
+            response = receptionist_model.invoke(prompt)
+            answer = response.content if hasattr(response, "content") else str(response)
+        except Exception:
+            answer = "Sorry, I'm unable to answer right now. Let's continue with your details."
+
+        return Response({"answer": answer})

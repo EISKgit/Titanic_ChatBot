@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import './App.css';
-import WhatAppDoes from './WhatAppDoes';
-import TechnologiesUsed from './TechnologiesUsed';
+
 
 function App() {
-  const maxAttempts = 3; // max retry attempts per step
+  const maxAttempts = 3;
   const [messages, setMessages] = useState([
     { sender: "bot", text: "Hello! I'm the Titanic Survival Predictor. What's your name?" }
   ]);
@@ -14,9 +13,23 @@ function App() {
   const [step, setStep] = useState("name");
   const [attempts, setAttempts] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
+  const [typingSender, setTypingSender] = useState("bot"); // bot or receptionist
   const messagesEndRef = useRef(null);
 
   const backendUrl = "http://127.0.0.1:8000/api/chatbot_ml/";
+  const receptionistUrl = "http://127.0.0.1:8000/api/titanic_receptionist/";
+
+  // Step prompts for repeating after receptionist response
+  const stepPrompts = {
+    name: "What's your name?",
+    pclass: "Which class are you traveling in? (1, 2, or 3)",
+    sex: "What is your Sex (male/female)?",
+    age: "what is your Age?",
+    sibsp: "How many siblings/spouses are aboard (SibSp)?",
+    parch: "How many parents/children are aboard (Parch)?",
+    fare: "What is your Fare? ($0 - $512)",
+    embarked: "What is your Port of Embarkation (C, Q, S)?"
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -34,6 +47,9 @@ function App() {
 
   const handleUserInput = async () => {
     if (!input.trim()) return;
+
+    // Add user message immediately
+    setMessages(prev => [...prev, { sender: "user", text: input }]);
 
     let valid = true;
     let errorMsg = "";
@@ -83,23 +99,37 @@ function App() {
         break;
     }
 
-    if (!valid) {
-      const newAttempts = attempts + 1;
-      if (newAttempts >= maxAttempts) {
-        resetChat();
-        return;
-      } else {
-        setMessages(prev => [...prev, { sender: "bot", text: `${errorMsg} Attempts left: ${maxAttempts - newAttempts}` }]);
-        setAttempts(newAttempts);
-        setInput("");
-        return;
+    // If invalid, send to receptionist
+    if (!valid && step !== "done") {
+      setIsTyping(true);
+      setTypingSender("receptionist");
+      try {
+        const res = await axios.post(receptionistUrl, { question: input });
+        // simulate typing
+        await new Promise(resolve => setTimeout(resolve, 800));
+        setMessages(prev => [
+          ...prev,
+          { sender: "receptionist", text: res.data.answer },
+          { sender: "bot", text: stepPrompts[step] } // repeat the original question
+        ]);
+      } catch {
+        await new Promise(resolve => setTimeout(resolve, 800));
+        setMessages(prev => [
+          ...prev,
+          { sender: "receptionist", text: "Receptionist unavailable. Let's continue with your details." },
+          { sender: "bot", text: stepPrompts[step] }
+        ]);
       }
+      setIsTyping(false);
+      setTypingSender("bot");
+      setInput("");
+      return;
     }
 
-    // Valid input
-    setMessages(prev => [...prev, { sender: "user", text: input }]);
-    setAttempts(0); // reset attempts for next step
+    // Valid input → continue ML flow
+    setAttempts(0);
     setIsTyping(true);
+    setTypingSender("bot");
     await new Promise(resolve => setTimeout(resolve, 400));
 
     let nextStep = step;
@@ -148,9 +178,10 @@ function App() {
           const res = await axios.post(backendUrl, { ...userData, Embarked: embarked });
           const { prediction, survival_probability, explanation } = res.data;
 
+          await new Promise(resolve => setTimeout(resolve, 600)); // simulate typing
           setMessages(prev => [
             ...prev,
-            { sender: "bot", text: `Prediction: ${prediction === 1 ? "Survived" : "Did not survive"} (Probability: ${survival_probability * 100}%)` },
+            { sender: "bot", text: `Prediction: ${prediction === 1 ? "✅ Survived" : "❌ Did not survive"} (Probability: ${(survival_probability * 100).toFixed(0)}%)` },
             { sender: "bot", text: `Reason: ${explanation.reason}` },
             { sender: "bot", text: `Suggestion: ${explanation.suggestion}` },
             { sender: "bot", text: `Fact: ${explanation.fact}` }
@@ -168,16 +199,12 @@ function App() {
     setStep(nextStep);
     setInput("");
     setIsTyping(false);
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") handleUserInput();
+    setTypingSender("bot");
   };
 
   const handleTryAgain = () => {
     resetChat("Hello! I'm the Titanic Survival Predictor. What's your name?");
   };
-
 
   return (
     <div className="video-background-container">
@@ -186,11 +213,8 @@ function App() {
         Your browser does not support the video tag.
       </video>
 
-      <WhatAppDoes />
-
 
       <div className="chat-overlay">
-
         <h1 className="chat-title">🚢 Titanic Survival Predictor</h1>
 
         <div className="chat-box">
@@ -200,7 +224,7 @@ function App() {
             </div>
           ))}
           {isTyping && (
-            <div className="message bot">
+            <div className={`message ${typingSender}`}>
               <div className="message-text typing">
                 <span></span><span></span><span></span>
               </div>
@@ -223,10 +247,12 @@ function App() {
         )}
 
         {step === "done" && (
-          <button className="btn-try" onClick={() => handleTryAgain()}>Try Once More</button>
+          <button className="btn-try" onClick={handleTryAgain}>
+            🔄 Try Once More
+          </button>
         )}
       </div>
-      <TechnologiesUsed />
+
     </div>
   );
 }
