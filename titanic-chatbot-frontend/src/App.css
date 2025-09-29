@@ -193,3 +193,18 @@ body {
   height: 100%;
   padding: 2rem;
 }
+
+
+/* Style for receptionist messages */
+.message.receptionist {
+  text-align: left;
+}
+
+.message.receptionist .message-text {
+  background: rgba(0, 100, 255, 0.3);
+  color: #fff;
+  border-radius: 12px;
+  padding: 8px 12px;
+  display: inline-block;
+  margin: 4px 0;
+}
