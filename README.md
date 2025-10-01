@@ -1,110 +1,123 @@
--Titanic Survival Predictor
+# Titanic Survival Predictor
 
-An interactive chat-based web app that predicts whether a passenger on the Titanic would have survived or not.
-Built with React (Vite) on the frontend, Django + Python on the backend, and a Scikit-learn machine learning model trained on Titanic dataset.
+An interactive **chat-based web app** that predicts whether a passenger on the Titanic would have survived.  
+Built with **React (Vite)** on the frontend, **Django + Python** on the backend, and a **Scikit-learn machine learning model** trained on the Titanic dataset.
 
-The app combines a smooth glassmorphism UI , background video 🎥, and a fun chat-style interface  to make exploring ML predictions more engaging.
+The app combines a smooth **glassmorphism UI**, **background video** 🎥, and a **chat-style interface** to make exploring ML predictions more engaging.
 
+---
 
-Preview
-- Background video of Titanic with chat overlay
-- Chatbot asking user details step by step and predicting survival
+## Preview
 
+- Background video of Titanic with chat overlay.
+- Chatbot asks user details step by step and predicts survival.
 
-Features
-- Chat-style input: Provide passenger details step by step.
-- Background video overlay for immersive Titanic theme.
-- Machine learning prediction (Survived / Not Survived).
-- Probability score with explanations & suggestions.
-- Retry option if inputs are invalid or after completing a prediction.
-- Glassmorphism design for modern UI feel.
+---
 
+## Features
 
--> Tech Stack
+- Chat-style input: provide passenger details step by step.  
+- Background video overlay for immersive Titanic theme.  
+- Machine learning prediction (**Survived / Not Survived**).  
+- Probability score with explanations & suggestions.  
+- Retry option if inputs are invalid or after completing a prediction.  
+- Modern **glassmorphism design** for UI.
 
-Frontend:
-- React.js (with Vite)
-- CSS (Glassmorphism, responsive design)
-- Axios (API requests)
+---
 
-Backend:
-- Python (Django REST Framework)
-- Scikit-learn (ML model trained on Titanic dataset)
+## Tech Stack
 
-Extras:
-- LangChain (for LLM workflow experimentation)
-- LangGraph (visual pipeline structuring)
+**Frontend:**
 
+- React.js (with Vite)  
+- CSS (Glassmorphism, responsive design)  
+- Axios (API requests)  
 
-----> Getting Started
+**Backend:**
 
-1 Clone the repo
+- Python (Django REST Framework)  
+- Scikit-learn (ML model trained on Titanic dataset)  
 
+**Extras:**
+
+- LangChain (LLM workflow experimentation)  
+- LangGraph (visual pipeline structuring)  
+
+---
+
+## Getting Started
+
+### 1. Clone the repository
+
+```bash
 git clone https://github.com/your-username/titanic-chatbot.git
 cd titanic-chatbot
 
-2 Backend Setup (Django)
+
+2. Backend Setup (Django)
 
 cd backend
 python -m venv venv
-source venv/bin/activate   # (Linux/Mac)
-venv\Scripts\activate      # (Windows)
+# Activate virtual environment
+# Linux / Mac
+source venv/bin/activate
+# Windows
+venv\Scripts\activate
 
 pip install -r requirements.txt
 python manage.py runserver
+The backend API will run on: http://127.0.0.1:8000/
 
 
-API will run on: http://127.0.0.1:8000/
 
-3 Frontend Setup (React + Vite)
-
+3. Frontend Setup (React + Vite)
 cd frontend
 npm install
 npm run dev
 
 
-App will run on: http://localhost:5173/
-
-------- Background Video Setup
-
-Place your Titanic video file at:
-
-frontend/public/videos/titanic.mp4
+The frontend will run on: http://localhost:5173/
 
 
-It will automatically load in the app background.
+How to Use
 
---------- How to Use
+Start both backend and frontend servers.
 
-Start both backend & frontend servers.
+Open the app in your browser.
 
-Open the app in browser.
-
-Enter details step by step (Class, Age, Gender, etc.).
+Enter passenger details step by step (Class, Age, Gender, etc.).
 
 Receive prediction with probability & explanation.
 
+Click "Try Once More" to restart the input process.
 
 
-Click Try Once More to restart.
+Future Improvements
 
-- Future Improvements
-- Add visual survival probability chart.
-- Try deep learning models (TensorFlow / PyTorch).
-- Deploy on cloud (AWS / Vercel / Render).
-- Add voice-based input/output for accessibility.
+Add visual survival probability chart.
 
-------- Contributing
+Explore deep learning models (TensorFlow / PyTorch).
 
-Contributions are welcome! Fork the repo, create a new branch, and submit a pull request.
+Deploy on cloud (AWS / Vercel / Render).
 
+Add voice-based input/output for accessibility.
 
-------- License
+Contributing
+
+Contributions are welcome!
+Fork the repository, create a new branch, and submit a pull request.
+
+License
 
 This project is licensed under the MIT License – free to use, modify, and distribute.
 
------------------------------------------------
+Quick Commands
 
-Project setup (pip install -r requirements.txt)
+Install Python dependencies:
 
-How to run server (python manage.py runserver)
+pip install -r requirements.txt
+
+
+Run Django server:
+
+python manage.py runserver
