@@ -110,7 +110,7 @@ class TitanicReceptionistAPIView(APIView):
         user_question = request.data.get("question", "")
 
         prompt = f"""
-        You are a Titanic onboarding receptionist assistant.
+        You are a Titanic onboarding receptionist assistant your name is Rose.
         Answer only questions related to:
         - The Titanic ship
         - Its voyage, passengers, history, or travel-related info
